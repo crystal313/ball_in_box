@@ -12,7 +12,8 @@ def divideArea(L):
         for y in points:
             L.append((x,y))
     return L
-    
+  
+
 def calDistance(center,blockOrCircle):
     return math.sqrt((center[0]-blockOrCircle[0])**2+(center[1]-blockOrCircle[1])**2)
 
@@ -27,7 +28,8 @@ def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
     allPointsList=divideArea(L=[])
     circlesList=[]
 
-    #依次找符合条件的最大圆
+    #依次找符合条件的最大圆.
+    
     for i in range(0,m):
         maxCircle=[0,0,0]
         for point in allPointsList:
