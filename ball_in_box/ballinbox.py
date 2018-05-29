@@ -1,8 +1,21 @@
 import math
 import random
-from .validate import validate
+import numpy
+import validate as val
 
 __all__ = ['ball_in_box']
+
+def divideArea(L):
+   #将正方形区域分成100*100个点，放入点列表中
+    points=numpy.linspace(-1,1,500)
+    for x in points:
+        for y in points:
+            L.append((x,y))
+    return L
+    
+def calDistance(center,blockOrCircle):
+    return math.sqrt((center[0]-blockOrCircle[0])**2+(center[1]-blockOrCircle[1])**2)
+
 
 def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
     """
@@ -11,22 +24,24 @@ def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
     
     This returns a list of tuple, composed of x,y of the circle and r of the circle.
     """
+    allPointsList=divideArea(L=[])
+    circlesList=[]
 
-    # The following is an example implementation.
-    circles = []
-    for circle_index in range(m):
+    #依次找符合条件的最大圆
+    for i in range(0,m):
+        maxCircle=[0,0,0]
+        for point in allPointsList:
+            unsureRadium=min(map(abs,[point[0]-1,point[0]+1,point[1]-1,point[1]+1]))
+            for block in blockers:
+                unsureRadium=min(unsureRadium,calDistance(point,block))
+            for circle in circlesList:
+                unsureRadium=min(unsureRadium,calDistance(point,circle)-circle[2])
+            if  unsureRadium > maxCircle[2]:
+                maxCircle[0]=point[0]
+                maxCircle[1]=point[1]
+                maxCircle[2]=unsureRadium
 
-        x = random.random()*2 - 1
-        y = random.random()*2 - 1
-        r = random.random()*0.1
+        circlesList.append(maxCircle)   
+        allPointsList = list(filter(lambda p: calDistance(p,maxCircle) > maxCircle[2] , allPointsList))       
 
-        circles.append((x, y, r))
-        while not validate(circles, blockers):
-            x = random.random()*2 - 1
-            y = random.random()*2 - 1
-            r = random.random()*0.1
-            circles[circle_index] = (x, y, r)
-
-        circle_index += 1
-    
-    return circles
+    return circlesList
