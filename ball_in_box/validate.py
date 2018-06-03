@@ -41,5 +41,5 @@ def validate(circles, blockers):
                  if math.sqrt((x1 - x2)**2 + (y1 - y2)**2) < (r1 + r2):
                      return False
            
-    # all good
+    # all good.
     return True

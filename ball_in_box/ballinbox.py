@@ -6,9 +6,9 @@ import validate as val
 __all__ = ['ball_in_box']
 
 def divideArea(L):
-   #将正方形区域分成250*250 个点，放入点列表中
+   #将正方形区域分成很多个点，放入点列表中
    #divide the area
-    points=numpy.linspace(-1,1,250)
+    points=numpy.linspace(-1,1,150)
     for x in points:
         for y in points:
             L.append((x,y))
